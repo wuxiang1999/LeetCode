@@ -29,3 +29,45 @@ class Solution {
     }
 }
 //滑动窗口 hashset
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        char str[]=s.toCharArray();
+        int i=0,j=0;
+        int max=0;
+        Set<Character> set=new HashSet<>();
+        while(i<str.length&&j<str.length)
+        {
+            if(!set.contains(str[j]))
+            {
+                set.add(str[j++]);
+                max=Math.max(max,j-i);
+            }
+            else
+            {
+                set.remove(str[i++]);
+            }
+        }
+        return max;
+    }
+}
+
+//最优解 HashMap
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        char str[]=s.toCharArray();
+        int i=0,j=0;
+        int max=0;
+        HashMap<Character,Integer> map=new HashMap<>();
+        while(j<str.length)
+        {
+            if(map.containsKey(str[j]))
+            {
+                i=Math.max(map.get(str[j]),i);
+            }
+            max=Math.max(max,j-i+1);
+            map.put(str[j],j+1);
+            j++;
+        }
+        return max;
+    }
+}
