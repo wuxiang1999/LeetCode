@@ -1,0 +1,31 @@
+//Stupid
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if(s.equals(" ")) return 1;
+        char[] str=s.toCharArray();
+        int max=0;
+        int count=0;
+        Map<Character, Integer> judge=new HashMap<>();
+        int i=0;
+        int begin=0;
+        while(i<str.length&&begin<str.length)
+        {
+            if(judge.containsKey(str[i]))
+            {   
+                judge.clear();
+                max=(max<count)?count:max;
+                count=0;
+                i=begin++;
+            }
+            else
+            {
+                judge.put(str[i],i);
+                ++count;
+            }   
+            i++;
+        }
+        max=(max<count)?count:max;
+        return max;
+    }
+}
+//滑动窗口 hashset
