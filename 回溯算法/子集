@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        int len=nums.size();
+        vector<vector<int>> res;
+        vector<int> tmp;
+        res.push_back(tmp);
+        if(len<=0)
+        {
+            return res;
+        }
+        vector<int> temp;
+        for(int i=1;i<=len;i++)
+        {
+            dfs(res,temp,nums,i,0);
+        }
+        return res;
+    }
+    void dfs(vector<vector<int>> &res,vector<int> &temp,vector<int> nums,int n,int begin)
+    {
+        if(temp.size()==n)
+        {
+            res.push_back(temp);
+            return;
+        }
+        if(begin>=nums.size()) return;
+        for(int i=begin;i<nums.size();i++)
+        {
+            temp.push_back(nums[i]);
+            dfs(res,temp,nums,n,i+1);
+            temp.pop_back();
+        }
+    }
+};
