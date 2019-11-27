@@ -1,0 +1,57 @@
+class Solution {
+public:
+    int totalNQueens(int n) {
+        vector<string> vec(n,string(n,'.'));
+        int res=0;
+        dfs(vec,res,n,0);
+        return res;
+    }
+    //step:即将在第step+1行上放step+1个皇后,避免行冲突
+    void dfs(vector<string> &vec,int &res,const int &n,int step)
+    {
+        if(step==n)
+        {
+            res++;
+            return;
+        }
+        for(int i=0;i<n;i++)
+        {
+            if(!isValid(vec,n,step,i))
+            {
+                continue;
+            }
+            vec[step][i]='Q';
+            dfs(vec,res,n,step+1);  //向下一行放皇后
+            vec[step][i]='.'; //回溯
+        }
+    }
+    //x为横坐标，y为纵坐标
+    bool isValid(vector<string> vec,int n,int x,int y)
+    {
+        //列冲突
+        for(int i=0;i<n;i++)
+        {
+            if(vec[i][y]=='Q')
+            {
+                return false;
+            }
+        }
+        //左上斜对角线冲突 ，因为左下斜角线未放皇后
+        for(int i=0;i<x;i++)
+        {
+            if(vec[i][y-x+i]=='Q')
+            {
+                return false;
+            }
+        }
+        //右上斜对角线冲突，因为右下斜角线未放皇后
+        for(int i=0;i<x;i++)
+        {
+            if(vec[i][y+x-i]=='Q')
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+};
