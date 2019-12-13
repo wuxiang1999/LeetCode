@@ -1,0 +1,50 @@
+#include <queue>
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int res=0; //存放结果
+        int m=grid.size(); //行数
+        if(!m)
+            return res;
+        int n=grid[0].size(); //列数
+        queue<pair<int,int>> q;    //详看github pair介绍
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(grid[i][j]=='0')
+                    continue;
+                ++res;
+                q.push({i,j});
+                grid[i][j]='0';  //让陆地变为海
+                while(!q.empty())
+                {
+                    int row=q.front().first;  //队列第一个元素的横坐标
+                    int col=q.front().second;  //队列第二个元素的纵坐标
+                    q.pop();
+                    if(col-1>=0&&grid[row][col-1]=='1')
+                    {
+                        q.push({row,col-1});
+                        grid[row][col-1]='0';  //访问左边元素、让陆地变为“海”
+                    }
+                    if(col+1<n&&grid[row][col+1]=='1')
+                    {
+                        q.push({row,col+1});
+                        grid[row][col+1]='0';  //访问右边元素、让陆地变为“海”
+                    }
+                    if(row-1>=0&&grid[row-1][col]=='1')
+                    {
+                        q.push({row-1,col});
+                        grid[row-1][col]='0';  //访问上边元素、让陆地变为“海”
+                    }
+                    if(row+1<m&&grid[row+1][col]=='1')
+                    {
+                        q.push({row+1,col});
+                        grid[row+1][col]='0'; //访问下边元素、让陆地变为“海”
+                    }
+                }                
+            }
+        }
+        return res;
+    }
+};
