@@ -1,0 +1,31 @@
+//递归版
+#include<algorithm>
+class Solution {
+public:
+    static bool cmp(int i,int j)
+    {
+        return (i<j);
+    }
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int>> res;
+        sort(nums.begin(),nums.end(),cmp);
+        vector<int> temp;
+        dfs(res,temp,nums,0);
+        return res;
+    }
+    void dfs(vector<vector<int>> &res,vector<int> &temp,vector<int> nums,int begin)
+    {
+        res.push_back(temp);
+        for(int i=begin;i<nums.size();i++)
+        {
+            if(i>begin&&nums[i]==nums[i-1])
+            {
+                continue;
+            }
+            temp.push_back(nums[i]);
+            dfs(res,temp,nums,i+1);
+            temp.pop_back();
+        }
+    }
+};
+//迭代版 
