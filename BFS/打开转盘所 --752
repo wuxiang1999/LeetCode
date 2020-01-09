@@ -1,0 +1,57 @@
+public class Node{
+    public String str;
+    public int step;
+    Node(String str,int step)
+    {
+        this.str=str;
+        this.step=step;
+    }
+}
+class Solution {
+    public int openLock(String[] deadends, String target) {
+        for(int i=0;i<deadends.length;i++)
+        {
+            if(deadends[i].equals("0000")||deadends[i].equals(target))
+                return -1;
+        }
+        Queue<Node> q=new LinkedList<>();
+        Node begin=new Node("0000",0);
+        Set<String> set=new HashSet<>();
+        for(String s:deadends)
+        {
+            set.add(s);
+        }
+        q.offer(begin);
+        while(q.size()>0)
+        {
+            Node front=q.poll();
+            set.add(front.str);
+            int step=front.step;
+            for(int i=1;i<=4;i++)
+            {
+                for(int j=-1;j<=1;j+=2)
+                {
+                    Node temp=new Node(turnLock(front.str,i,j),step+1);
+                    if(set.contains(temp.str))
+                    {
+                        continue;
+                    }
+                    if(temp.str.equals(target))
+                    {
+                        return front.step+1;
+                    }
+                    set.add(temp.str);
+                    q.offer(temp);
+                }
+            }
+        }
+        return -1;
+    }
+    public String turnLock(String str,int num,int turn)  //num为第几个字符，turn：1为顺时针转。-1为逆时针转
+    {
+        char tmp=str.charAt(num-1);
+        int num_tmp=(turn+10+(int)(tmp-'0'))%10;
+        tmp=(char)('0'+num_tmp);
+        return str.substring(0,num-1)+tmp+str.substring(num);
+    }
+}
