@@ -1,0 +1,98 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+//递归版
+
+class Solution {
+public:
+    vector<int> res;
+    vector<int> postorderTraversal(TreeNode* root) {
+        if(root==NULL) return res;
+        return postorder(root);
+    }
+    vector<int> postorder(TreeNode* root){
+        if(root->left)
+            postorder(root->left);
+        if(root->right)
+            postorder(root->right);
+        res.push_back(root->val);
+        return res;
+    }
+};
+
+//推荐这种方法   迭代版（利用两个栈，不破坏的树的结构）
+#include<stack>
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> res;
+        if(root==NULL)
+            return res;
+        stack<TreeNode*> s;//用于存储结点
+        stack<int> resStack;//用于存储结果
+        TreeNode* temp;
+        s.push(root);
+        while(!s.empty())
+        {
+            temp=s.top();
+            s.pop();
+            resStack.push(temp->val);  
+            if(temp->left)
+                s.push(temp->left);
+            if(temp->right)
+                s.push(temp->right);
+        }
+        //将栈中的结果输出
+        while(!resStack.empty()){
+            res.push_back(resStack.top());
+            resStack.pop();
+        }
+        return res;
+    }
+};
+
+
+
+
+//迭代版(破坏了树的结构)
+
+#include<stack>
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> res;
+        if(root==NULL) return res;
+        stack<TreeNode*> s;
+        TreeNode* temp;
+        s.push(root);
+        while(!s.empty())
+        {
+            temp=s.top();
+            if(temp->left==NULL&&temp->right==NULL)
+            {
+                res.push_back(temp->val);
+                s.pop();
+            }
+            if(temp->left)
+            {
+                s.push(temp->left);
+                temp->left=NULL;  //断开左子树，防止回溯时再次访问
+                continue;
+            }
+            if(temp->right)
+            {
+                s.push(temp->right);
+                temp->right=NULL; //断开右子树，防止回溯时再次访问
+            }
+        }
+        return res;
+    }
+};
+
