@@ -7,6 +7,9 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+ 
+//“自顶向下” 的解决方案
+//对于每个节点，如果我们知道某节点的深度，那我们将知道它子节点的深度。
 #include<algorithm>
 class Solution {
 public:
@@ -27,3 +30,25 @@ public:
         depth(root->right,dep+1);
     }
 };
+//“自底向上” 的解决方案
+
+//以其左子节点为根的最大深度为l和以其右子节点为根的最大深度为r，
+我们可以选择它们之间的最大值，再加上1来获得根节点所在的子树的最大深度。
+
+#include<algorithm>
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root==NULL)
+            return 0;
+        return max(depth(root->left,1),depth(root->right,1))+1;
+    }
+    int depth(TreeNode* root,int dep){
+        if(root==NULL)
+            return 0;
+        if(root->left==NULL&&root->right==NULL)
+            return 1;
+        return max(depth(root->left,1),depth(root->right,1))+1;    
+    }
+};
+
