@@ -27,7 +27,36 @@ public:
     }
 };
 
-//迭代版
+//推荐这种方法  迭代版（不破坏树的结构）
+
+#include<stack>
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        stack<TreeNode*> s;
+        TreeNode* temp;
+        TreeNode* curr;  //curr为当前所遍历到的节点
+        curr=root;
+        while(curr!=NULL||!s.empty())
+        {
+            while(curr!=NULL){
+                s.push(curr);
+                curr=curr->left;  //走到树的最左边叶节点
+            }
+            temp=s.top();
+            s.pop();
+            res.push_back(temp->val);
+            curr=temp->right;
+        }
+        return res;
+    }
+};
+
+
+
+
+//迭代版（破坏树的结构）
 
 #include<stack>
 class Solution {
