@@ -43,3 +43,39 @@ public:
 };
 
 //迭代版
+
+//每次提取两个结点并比较它们的值。然后，将两个结点的左右子结点按相反的顺序插入队列中。
+    当队列为空时，或者我们检测到树不对称（即从队列中取出两个不相等的连续结点）时，该算法结束。
+
+ #include<queue>
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(root==NULL)
+            return true;
+        queue<TreeNode*> q;
+        TreeNode* temp1;
+        TreeNode* temp2;
+        q.push(root);
+        q.push(root);
+        while(!q.empty())
+        {
+            temp1=q.front();
+            q.pop();
+            temp2=q.front();
+            q.pop();
+            if(temp1==NULL&&temp2==NULL)  //如果两次取出来的值为空
+                continue;
+            if(temp1==NULL||temp2==NULL)  //temp1，temp2中有一个为空
+                return false;
+            if(temp1->val!=temp2->val)  //temp1的结点值和temp2节点的值不相等
+                return false;
+            q.push(temp1->left);  
+            q.push(temp2->right);
+            q.push(temp1->right);
+            q.push(temp2->left);
+        }
+        return true;
+    }
+};
+
