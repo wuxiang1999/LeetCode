@@ -1,0 +1,82 @@
+给定一个完美二叉树，其所有叶子节点都在同一层，每个父节点都有两个子节点。二叉树定义如下：
+
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。
+初始状态下，所有 next 指针都被设置为 NULL。
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val, Node* _left, Node* _right, Node* _next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+};
+*/
+
+//迭代版（不用借助辅助空间）
+
+
+class Solution {
+public:
+    Node* connect(Node* root) {
+        if(root==NULL)
+            return NULL;
+            Node* temp;
+            Node* tmp;
+            tmp=root;
+        while(tmp->left){
+            temp=tmp;
+            while(temp){ //利用之前构造的next的结点
+                temp->left->next=temp->right;
+                if(temp->next)
+                    temp->right->next=temp->next->left;
+                temp=temp->next;
+            }
+            tmp=tmp->left;
+        }
+        return root;
+    }
+};
+
+//迭代版（层序遍历,借助队列）
+#include<queue>
+class Solution {
+public:
+    Node* connect(Node* root) {
+        if(root==NULL)
+            return NULL;
+        Node* temp;
+        queue<Node*> q;
+        q.push(root);
+        int count;
+        while(!q.empty()){
+            count=q.size();
+            while(count--){
+                temp=q.front();
+                q.pop();
+                if(count==0)
+                    temp->next=NULL;
+                else
+                    temp->next=q.front();
+                if(temp->left!=NULL)
+                    q.push(temp->left);
+                if(temp->right!=NULL)
+                    q.push(temp->right);
+            }
+        }
+        return root;
+    }
+};
