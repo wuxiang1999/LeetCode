@@ -1,1 +1,38 @@
-
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> preArray;
+    vector<int> inArray;
+    int index;
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        if(preorder.size()<=0)
+            return NULL;
+        preArray=preorder;
+        inArray=inorder;
+        index=0;  //当前构造树或字树的根节点
+        return build(0,inorder.size());  //区域为[begin,end)
+    }
+    TreeNode* build(int begin,int end){
+        if(index>=preArray.size()||end-begin<1)
+            return NULL;
+        TreeNode* root=new TreeNode(preArray.at(index++));
+        if(end-begin==1)
+            return root;
+        int i;
+        for(i=begin;i<end;i++){
+            if(inArray.at(i)==root->val)
+                break;
+        }
+        root->left=build(begin,i);
+        root->right=build(i+1,end);
+        return root;
+    }  
+};
