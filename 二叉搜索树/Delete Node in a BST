@@ -1,0 +1,62 @@
+如果 key > root.val，说明要删除的节点在右子树，root.right = deleteNode(root.right, key)。
+如果 key < root.val，说明要删除的节点在左子树，root.left = deleteNode(root.left, key)。
+如果 key == root.val，则该节点就是我们要删除的节点，则：
+如果该节点是叶子节点，则直接删除它：root = null。
+如果该节点不是叶子节点且有右节点，则用它的后继节点的值替代 root.val = successor.val，然后删除后继节点。
+如果该节点不是叶子节点且只有左节点，则用它的前驱节点的值替代 root.val = predecessor.val，然后删除前驱节点。
+返回 root。
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    //中序遍历时该节点的前缀
+    TreeNode temp=null;
+    public TreeNode predecessor(TreeNode root){
+        root=root.left;
+        while(root.right!=null){
+            root=root.right;
+        }
+        return root;
+    }
+    //中序遍历时该节点的后缀
+    public TreeNode successor(TreeNode root){
+        root=root.right;
+        while(root.left!=null){
+            root=root.left;
+        } 
+        return root;
+    }
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if(root==null)
+            return null;
+        if(key==root.val){
+            //该节点是叶节点
+            if(root.left==null&&root.right==null){
+                root=null;
+            }
+            //该节点有右结点，将该节点的值替换为后缀的值
+            else if(root.right!=null){
+                root.val=successor(root).val;
+                root.right=deleteNode(root.right,root.val);  //将后缀删除
+            //该节点无右结点，有左结点,将该节点的值替换为前缀的值
+            }else{
+                root.val=predecessor(root).val;
+                root.left=deleteNode(root.left,root.val);  //将前缀删除
+            }
+            return root;
+        }
+        if(key<root.val)
+            root.left=deleteNode(root.left,key);
+        if(key>root.val)
+            root.right=deleteNode(root.right,key);
+        return root;
+    }
+}
