@@ -1,0 +1,18 @@
+//方法一
+void swap(int& x,int& y){
+  int temp=y;
+  y=x;
+  x=temp;
+}
+//方法二(适合比较小的数交换，可能会越界)
+void swap(int& x,int&y){
+  x=x+y;
+  y=x-y;
+  x=x-y;
+}
+//方法三
+void swap(int& x,int&y){
+  x=x^y;
+  y=x^y; //(x^y)^y=x^(y^y)=>x
+  x=x^y  //(x^y)^x=x^(x^y)=>(x^x)^y=y
+}
